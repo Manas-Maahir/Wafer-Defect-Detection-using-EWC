@@ -1,0 +1,47 @@
+# ── Large Data Files ─────────────────────────────────────────
+# These are too large for GitHub (GH limit is 100MB per file).
+# Download / generate them locally before training.
+polar_strips.npy
+*.npy
+*.pkl
+*.pth
+
+# ── Checkpoints ───────────────────────────────────────────────
+# Trained model weights. Re-generate by running train.py.
+checkpoints/
+
+# ── Raw Dataset Directory ────────────────────────────────────
+LSWMD.pkl/
+
+# ── Virtual Environments ─────────────────────────────────────
+wafer_gpu_env/
+wafer_legacy_env/
+venv/
+env/
+.venv/
+
+# ── Python Cache ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# ── Generated Outputs ─────────────────────────────────────────
+wafer_attention.png
+*.png
+*.jpg
+
+# ── Jupyter / IDE ─────────────────────────────────────────────
+.ipynb_checkpoints/
+.vscode/
+.idea/
+*.ipynb
+
+# ── OS Junk ───────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs / Temp ───────────────────────────────────────────────
+*.log
+tmp/
