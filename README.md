@@ -1,4 +1,5 @@
 # Wafer Defect Classification with Continual Learning
+## 👥 Contributors
 - [Manas Maahir](https://github.com/Manas-Maahir)
 - [Jay Krishna](https://github.com/JayKrishna05)
 - [Kartheek Yadav](https://github.com/KartheekYadav87)
