@@ -1,9 +1,22 @@
 # Wafer Defect Classification with Continual Learning
 ## 👥 Contributors
 - [Manas Maahir](https://github.com/Manas-Maahir)
-- [Jay Krishna](https://github.com/JayKrishna05)
+- [Jay Krishna Kamlekar](https://github.com/JayKrishna05)
 - [Kartheek Yadav](https://github.com/KartheekYadav87)
 ## What is this project?
+
+This project develops an MAchine Vision based AI system for automatically classifying semiconductor wafer defect patterns from wafer map images. Each wafer map represents pass/fail information of chips on a wafer, and the goal is to identify 9 distinct defect classes (such as Center, Edge-Ring, Scratch, etc.) that correspond to specific manufacturing issues.
+
+To better capture the circular geometry of wafers, the data is first transformed from Cartesian coordinates into a polar representation,
+ where patterns like rings and edge defects become easier for the model 
+to recognize. These processed inputs are then fed into a hybrid deep learning architecture that combines a lightweight ResNet-18 (for local feature extraction) with a Swin Transformer (for modeling long-range spatial relationships across the wafer).
+
+A key focus of the project is making the model usable in real-world, evolving environments. To address the problem of models forgetting previously learned patterns when updated with new data, the system integrates Elastic Weight Consolidation (EWC). This allows the model to retain past knowledge while adapting to new defect patterns, making it suitable for continual deployment in semiconductor fabrication settings.
+
+
+Overall, the project provides a scalable, efficient, and production-aware solution that reduces the need for manual inspection while maintaining high accuracy over time.
+
+## What are Silicon Wafer Defects?
 
 Semiconductor manufacturing is an extremely precise process. You start with a silicon wafer, you run it through hundreds of process steps, and at the end you hope that the tiny circuits etched on it actually work. When something goes wrong during manufacturing, it does not go wrong randomly. Defects on wafers tend to cluster in specific geometric patterns that reflect the specific process failure that caused them. An edge ring defect means something went wrong at the outer edge of the wafer during a deposition step. A scratch defect looks like a straight line and is usually caused by a mechanical handling issue. A center defect concentrates right in the middle and often points to an issue with process uniformity.
 
