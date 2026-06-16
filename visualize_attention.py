@@ -3,7 +3,7 @@ import torch.nn.functional as F
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
-from model import HybridWaferModel
+from model import SwinWaferModel
 from preprocessing import preprocess_wafer
 
 def generate_saliency_map(model, input_tensor):
@@ -34,7 +34,7 @@ def visualize_defect_attention(wafer_map, model_path=None):
     input_tensor = torch.from_numpy(polar_strip).float().unsqueeze(0).unsqueeze(0)
     
     # 2. Load Model (or use dummy for demo)
-    model = HybridWaferModel(num_classes=9)
+    model = SwinWaferModel(num_classes=9)
     if model_path:
         state = torch.load(model_path, map_location="cpu", weights_only=False)
         # Support both raw state-dicts and checkpoint dicts
