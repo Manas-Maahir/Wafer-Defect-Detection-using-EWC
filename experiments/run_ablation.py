@@ -32,12 +32,14 @@ def metrics_path(tag, seed):
     return os.path.join(EVAL_DIR, f"cl_metrics_{tag}_seed{seed}.json")
 
 
-def run_regime(tag, seed, extra_flags, skip_existing):
+def run_regime(tag, seed, extra_flags, skip_existing, epochs=None):
     out = metrics_path(tag, seed)
     if skip_existing and os.path.exists(out):
         print(f"  [skip] {out} already exists")
         return
     cmd = [sys.executable, "train.py", "--seed", str(seed), "--tag", f"{tag}", *extra_flags]
+    if epochs is not None:
+        cmd += ["--epochs", str(epochs)]
     print(f"  [run ] {' '.join(cmd)}")
     subprocess.run(cmd, check=True)
 
@@ -64,13 +66,16 @@ def main():
                     help="Do not re-run a regime/seed whose metrics file already exists.")
     ap.add_argument("--no-train", action="store_true",
                     help="Only aggregate existing metrics; do not launch training.")
+    ap.add_argument("--epochs", type=int, default=None,
+                    help="Epochs/task passed to train.py (default: train.py's 8). "
+                         "Lower it to fit a time budget.")
     args = ap.parse_args()
 
     if not args.no_train:
         for seed in args.seeds:
             for tag in args.regimes:
                 print(f"\n=== regime={tag} seed={seed} ===")
-                run_regime(tag, seed, REGIMES[tag], args.skip_existing)
+                run_regime(tag, seed, REGIMES[tag], args.skip_existing, epochs=args.epochs)
 
     # ── Aggregate ──
     print("\n" + "=" * 70)

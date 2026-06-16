@@ -187,6 +187,21 @@ def print_report(y_true, y_pred, cm, aucs, macro_auc):
     for name, acc in zip(CLASS_NAMES, per_class_acc):
         print(f"  {name:<12}  Acc = {acc:.4f}")
 
+    # Per-class false-positive / false-negative rates from the confusion matrix
+    total = cm.sum()
+    tp  = cm.diagonal().astype(float)
+    fn  = cm.sum(axis=1) - tp          # actual class i, predicted otherwise
+    fp  = cm.sum(axis=0) - tp          # predicted class i, actually other
+    tn  = total - tp - fn - fp
+    fnr = np.divide(fn, fn + tp, out=np.zeros_like(fn), where=(fn + tp) > 0)
+    fpr = np.divide(fp, fp + tn, out=np.zeros_like(fp), where=(fp + tn) > 0)
+    print("\n" + "=" * 65)
+    print("  PER-CLASS FALSE-POSITIVE / FALSE-NEGATIVE RATE")
+    print("=" * 65)
+    for name, a, b in zip(CLASS_NAMES, fpr, fnr):
+        print(f"  {name:<12}  FPR = {a:.4f}   FNR = {b:.4f}")
+    print(f"  {'Macro Avg':<12}  FPR = {fpr.mean():.4f}   FNR = {fnr.mean():.4f}")
+
     overall_acc = cm.diagonal().sum() / cm.sum()
     print(f"\n  Overall Accuracy : {overall_acc:.4f}")
     print("=" * 65)
@@ -206,6 +221,11 @@ def print_report(y_true, y_pred, cm, aucs, macro_auc):
         f.write("=" * 65 + "\n")
         for name, acc in zip(CLASS_NAMES, per_class_acc):
             f.write(f"  {name:<12}  Acc = {acc:.4f}\n")
+        f.write("\nPER-CLASS FALSE-POSITIVE / FALSE-NEGATIVE RATE\n")
+        f.write("=" * 65 + "\n")
+        for name, a, b in zip(CLASS_NAMES, fpr, fnr):
+            f.write(f"  {name:<12}  FPR = {a:.4f}   FNR = {b:.4f}\n")
+        f.write(f"  {'Macro Avg':<12}  FPR = {fpr.mean():.4f}   FNR = {fnr.mean():.4f}\n")
         f.write(f"\n  Overall Accuracy : {overall_acc:.4f}\n")
 
     print(f"\nFull report saved: {report_path}")

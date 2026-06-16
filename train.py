@@ -153,9 +153,11 @@ def evaluate(model, loader):
 
 # ──────────────────────────── MAIN ────────────────────────────
 def main():
-    global EWC_LAMBDA  # may be overridden by --ewc-lambda below
+    global EWC_LAMBDA, EPOCHS  # may be overridden by CLI below
     parser = argparse.ArgumentParser(description="Wafer defect continual learning trainer")
     parser.add_argument("--seed", type=int, default=42, help="Global random seed (default: 42)")
+    parser.add_argument("--epochs", type=int, default=EPOCHS,
+                        help=f"Max epochs per task (default: {EPOCHS}). Lower it to fit a time budget.")
     parser.add_argument("--no-ewc", action="store_true",
                         help="Disable EWC (ablation): never apply the Fisher penalty.")
     parser.add_argument("--no-replay", action="store_true",
@@ -170,8 +172,9 @@ def main():
     use_ewc    = not args.no_ewc
     use_replay = not args.no_replay
 
-    # Allow CLI override of the EWC strength used inside train_one_epoch.
+    # Allow CLI override of the EWC strength and epoch budget used during training.
     EWC_LAMBDA = args.ewc_lambda
+    EPOCHS = args.epochs
 
     # Filename suffix: explicit tag, else derived from the active regime.
     if args.tag is not None:
